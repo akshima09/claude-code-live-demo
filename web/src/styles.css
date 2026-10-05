@@ -1,0 +1,246 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap");
+
+:root {
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: #152235;
+  background: #edf2f5;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(340px, 0.9fr) minmax(460px, 1.1fr);
+}
+
+.brand-panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(2rem, 5vw, 5rem);
+  color: #f7fbfa;
+  background:
+    radial-gradient(circle at 15% 15%, rgb(56 189 160 / 30%), transparent 24rem),
+    linear-gradient(145deg, #07182a 0%, #0b3440 65%, #0a4d49 100%);
+}
+
+.brand-panel::after {
+  content: "";
+  position: absolute;
+  width: 32rem;
+  height: 32rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 50%;
+  right: -14rem;
+  bottom: -10rem;
+  box-shadow: 0 0 0 5rem rgb(255 255 255 / 3%), 0 0 0 10rem rgb(255 255 255 / 2%);
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.85rem;
+  color: #08222b;
+  background: #7ce2c3;
+  font: 700 1.35rem "Manrope", sans-serif;
+}
+
+.brand-panel h1 {
+  max-width: 620px;
+  margin: 0.75rem 0 1.25rem;
+  font: 700 clamp(2.4rem, 5vw, 5.2rem) / 1.03 "Manrope", sans-serif;
+  letter-spacing: -0.055em;
+}
+
+.brand-copy {
+  max-width: 520px;
+  color: #bfd1d1;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #91acae;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.eyebrow.accent {
+  color: #08776b;
+}
+
+.trust-note {
+  z-index: 1;
+  color: #a9c0c1;
+  font-size: 0.82rem;
+}
+
+.login-panel {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background:
+    linear-gradient(rgb(255 255 255 / 72%), rgb(255 255 255 / 72%)),
+    radial-gradient(circle at 80% 20%, #c9eee5, transparent 25rem);
+}
+
+.login-card,
+.success-card {
+  width: min(100%, 460px);
+  padding: clamp(2rem, 5vw, 3.25rem);
+  border: 1px solid rgb(8 50 64 / 9%);
+  border-radius: 1.5rem;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 24px 70px rgb(18 55 68 / 12%);
+}
+
+.login-card {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.login-card h2,
+.success-card h1 {
+  margin: 0.35rem 0 0.25rem;
+  font: 700 2rem "Manrope", sans-serif;
+  letter-spacing: -0.035em;
+}
+
+.muted,
+.success-card > p {
+  margin: 0;
+  color: #6b7785;
+}
+
+label {
+  display: grid;
+  gap: 0.5rem;
+  color: #344458;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #cbd5db;
+  border-radius: 0.7rem;
+  color: #152235;
+  background: #fff;
+  outline: none;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+input:focus {
+  border-color: #119b87;
+  box-shadow: 0 0 0 3px rgb(17 155 135 / 14%);
+}
+
+.primary-button,
+.secondary-button {
+  border: 0;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 150ms, opacity 150ms;
+}
+
+.primary-button {
+  padding: 0.95rem 1.2rem;
+  color: #fff;
+  background: #0b766b;
+  box-shadow: 0 10px 24px rgb(11 118 107 / 20%);
+}
+
+.primary-button:hover:not(:disabled),
+.secondary-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.secondary-button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.1rem;
+  color: #0b766b;
+  background: #dff5ef;
+}
+
+.error-message {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #f0c4c0;
+  border-radius: 0.7rem;
+  color: #8c2d26;
+  background: #fff5f3;
+  font-size: 0.88rem;
+}
+
+.demo-hint {
+  margin: 0;
+  color: #7b8792;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+code {
+  color: #4b5c69;
+}
+
+.success-card {
+  text-align: center;
+}
+
+.success-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  color: #fff;
+  background: #0b766b;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-panel {
+    min-height: 38vh;
+  }
+
+  .brand-panel h1 {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .trust-note {
+    margin-top: 3rem;
+  }
+}
+

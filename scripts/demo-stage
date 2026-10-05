@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+stage="${1:-}"
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Refusing to switch: the working tree has uncommitted changes." >&2
+  echo "Commit or stash them, then run this command again." >&2
+  exit 1
+fi
+
+case "$stage" in
+  start) ref="demo-start" ;;
+  debug) ref="demo-debug" ;;
+  solution) ref="demo-solution" ;;
+  *)
+    echo "Usage: ./scripts/demo-stage {start|debug|solution}" >&2
+    exit 2
+    ;;
+esac
+
+git switch --detach "$ref"
+echo "Ready at $ref ($(git rev-parse --short HEAD))."
+
