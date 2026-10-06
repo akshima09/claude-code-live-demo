@@ -19,6 +19,7 @@ export async function login(username: string, password: string): Promise<LoginRe
       ok: false,
       status: response.status,
       message: body.error?.message ?? "Unable to sign in.",
+      retryAfterSeconds: body.error?.retryAfterSeconds,
     };
   }
 

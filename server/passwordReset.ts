@@ -7,8 +7,10 @@ const resetRequests = new SlidingWindowAttemptTracker(3, 5 * 60 * 1000);
 export function requestPasswordReset(request: Request, response: Response): void {
   const username = String(request.body?.username ?? "").toLocaleLowerCase();
   if (resetRequests.isBlocked(username)) {
+    const retryAfterSeconds = resetRequests.retryAfterSeconds(username);
+    response.setHeader("Retry-After", String(retryAfterSeconds));
     response.status(429).json({
-      error: { code: "TOO_MANY_REQUESTS", message: "Please try again later." },
+      error: { code: "TOO_MANY_REQUESTS", message: "Please try again later.", retryAfterSeconds },
     });
     return;
   }

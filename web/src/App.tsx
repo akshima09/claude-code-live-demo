@@ -1,13 +1,21 @@
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { login, type Member } from "./api.ts";
+import { Dashboard } from "./Dashboard.tsx";
 
 export function App() {
-  const [username, setUsername] = useState("belona");
+  const [username, setUsername] = useState("akshima");
   const [password, setPassword] = useState("");
   const [member, setMember] = useState<Member | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [retryAfter, setRetryAfter] = useState(0);
+
+  useEffect(() => {
+    if (retryAfter <= 0) return;
+    const id = setInterval(() => setRetryAfter((s) => Math.max(0, s - 1)), 1_000);
+    return () => clearInterval(id);
+  }, [retryAfter]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,6 +26,7 @@ export function App() {
       const result = await login(username, password);
       if (!result.ok) {
         setError(result.message);
+        if (result.retryAfterSeconds) setRetryAfter(result.retryAfterSeconds);
         return;
       }
       setMember(result.member);
@@ -29,19 +38,7 @@ export function App() {
   }
 
   if (member) {
-    return (
-      <main className="shell">
-        <section className="success-card" aria-live="polite">
-          <div className="success-icon">✓</div>
-          <p className="eyebrow">SECURE SESSION</p>
-          <h1>Welcome, {member.displayName}</h1>
-          <p>Your member dashboard is ready.</p>
-          <button className="secondary-button" onClick={() => setMember(null)}>
-            Sign out
-          </button>
-        </section>
-      </main>
-    );
+    return <Dashboard member={member} onSignOut={() => setMember(null)} />;
   }
 
   return (
@@ -54,8 +51,7 @@ export function App() {
           <p className="eyebrow">NORTHSTAR CREDIT UNION</p>
           <h1>Banking that keeps you moving forward.</h1>
           <p className="brand-copy">
-            A deliberately small member portal for demonstrating safe, full-stack AI-assisted
-            engineering.
+            See your accounts, track spending, and move money with confidence—all in one simple place.
           </p>
         </div>
         <p className="trust-note">Demo data only · No real member information</p>
@@ -66,7 +62,7 @@ export function App() {
           <div>
             <p className="eyebrow accent">MEMBER ACCESS</p>
             <h2>Sign in</h2>
-            <p className="muted">Use your demo credentials to continue.</p>
+            <p className="muted">Welcome back. Enter your details to continue.</p>
           </div>
 
           <label>
@@ -94,19 +90,21 @@ export function App() {
           {error && (
             <div className="error-message" role="alert">
               {error}
+              {retryAfter > 0 && (
+                <span> Try again in {retryAfter} second{retryAfter === 1 ? "" : "s"}.</span>
+              )}
             </div>
           )}
 
-          <button className="primary-button" disabled={loading} type="submit">
+          <button className="primary-button" disabled={loading || retryAfter > 0} type="submit">
             {loading ? "Signing in…" : "Sign in securely"}
           </button>
 
           <p className="demo-hint">
-            Demo: <code>belona</code> / <code>correct-horse-battery-staple</code>
+            Demo: <code>akshima</code> / <code>correct-horse-battery-staple</code>
           </p>
         </form>
       </section>
     </main>
   );
 }
-

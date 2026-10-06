@@ -1,0 +1,78 @@
+1. Explore
+
+Analyze this repository and trace the existing account and
+dashboard flow.
+
+I want to understand:
+- where account information is loaded
+- where the dashboard is implemented
+- what API patterns already exist
+- how validation and error handling are currently done
+- whether there are existing tests I should follow
+
+Do not modify any files yet.
+
+2. STEP 2 — Plan the Transfer Feature
+
+Plan the smallest safe implementation for adding a Transfer
+feature to the existing dashboard.
+
+The feature should:
+- allow a user to transfer money from one account to another
+- use a POST /api/transfer endpoint
+- validate the source account
+- validate the destination account
+- reject the transfer if the source account has insufficient funds
+- follow the existing validation and error-handling patterns
+
+Requirements:
+- preserve existing API behavior
+- reuse existing infrastructure
+- do not add unnecessary dependencies
+- do not refactor unrelated code
+- identify the files that need to change
+- explain how you would test the feature
+
+Do not modify any files yet.
+
+STEP 3 — Review Claude's Plan
+STEP 4 — Implement
+
+Implement the approved plan.
+
+Follow the existing repository patterns.
+
+For the transfer feature:
+- add the transfer UI to the dashboard
+- implement POST /api/transfer
+- validate source and destination accounts
+- reject insufficient funds
+- preserve existing response contracts
+- reuse existing services and validation
+- do not refactor unrelated code
+
+Add tests for:
+1. successful transfer
+2. insufficient balance
+3. invalid/missing fields
+
+After implementation, run the relevant test suite
+and report any failures.
+
+STEP 7 — VERIFY WITH CLAUDE
+Verify the transfer implementation.
+
+Please:
+1. Inspect the final git diff.
+2. Confirm that only files related to the transfer feature changed.
+3. Verify that existing API behavior was preserved.
+4. Run the relevant tests.
+5. Confirm the successful transfer case works.
+6. Confirm insufficient balance is rejected.
+7. Confirm invalid or missing fields are handled.
+8. Identify any missing edge cases or security concerns.
+
+Do not make additional changes unless you find a
+failure that needs fixing.
+
+https://api.githubcopilot.com/mcp/

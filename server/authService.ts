@@ -11,9 +11,9 @@ type DemoMember = {
 
 const members = new Map<string, DemoMember>([
   [
-    "belona",
+    "akshima",
     {
-      displayName: "Belona Singh",
+      displayName: "Akshima Singh",
       passwordDigest: digest("correct-horse-battery-staple"),
     },
   ],

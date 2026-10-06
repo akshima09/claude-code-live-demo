@@ -2,6 +2,7 @@ import express, { type Express } from "express";
 import { z } from "zod";
 
 import { authenticate } from "./authService.ts";
+import { SlidingWindowAttemptTracker } from "./attemptTracker.ts";
 import { requestPasswordReset } from "./passwordReset.ts";
 import type { ApiError, LoginSuccess } from "./types.ts";
 
@@ -12,7 +13,9 @@ const loginSchema = z
   })
   .strict();
 
-export function createApp(): Express {
+export function createApp(
+  loginAttempts = new SlidingWindowAttemptTracker(5, 10 * 60 * 1000),
+): Express {
   const app = express();
   app.use(express.json());
 
@@ -30,8 +33,26 @@ export function createApp(): Express {
       return;
     }
 
-    const result = authenticate(parsed.data.username, parsed.data.password);
+    const { username, password } = parsed.data;
+    const key = username.toLocaleLowerCase();
+
+    if (loginAttempts.isBlocked(key)) {
+      const retryAfterSeconds = loginAttempts.retryAfterSeconds(key);
+      response.setHeader("Retry-After", String(retryAfterSeconds));
+      const body: ApiError = {
+        error: {
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many failed sign-in attempts. Please try again later.",
+          retryAfterSeconds,
+        },
+      };
+      response.status(429).json(body);
+      return;
+    }
+
+    const result = authenticate(username, password);
     if (!result) {
+      loginAttempts.record(key);
       const body: ApiError = {
         error: { code: "INVALID_CREDENTIALS", message: "Username or password is incorrect." },
       };
@@ -39,6 +60,7 @@ export function createApp(): Express {
       return;
     }
 
+    loginAttempts.clear(key);
     const body: LoginSuccess = result;
     response.json(body);
   });
